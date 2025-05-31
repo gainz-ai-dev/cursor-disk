@@ -1,5 +1,7 @@
 import Foundation
+#if canImport(OSLog)
 import OSLog
+#endif
 
 public actor FileIndexActor {
     private(set) var fileMap: [URL: FileInfo] = [:]

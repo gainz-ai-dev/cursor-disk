@@ -143,8 +143,7 @@ struct HomeScreen: View {
             .padding(.vertical, 10)
             .padding(.horizontal, 20)
             .background(Material.regularMaterial, in: RoundedRectangle(cornerRadius: 10))
-                
-
+            Group {
                 if viewModel.isScanning {
                     HStack {
                         ProgressView("Scanning... ")
@@ -169,7 +168,7 @@ struct HomeScreen: View {
                         }
                         .controlSize(.large)
                         .tint(.accentColor)
-                        
+
                         Button {
                             Task { await viewModel.clearIndex() }
                         } label: {
