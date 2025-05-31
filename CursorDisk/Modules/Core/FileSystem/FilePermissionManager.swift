@@ -1,6 +1,10 @@
 import Foundation
+#if canImport(AppKit)
 import AppKit // Required for NSWorkspace
+#endif
+#if canImport(UniformTypeIdentifiers)
 import UniformTypeIdentifiers // For UTType if needed for specific checks
+#endif
 
 /// Manages and checks for Full Disk Access (FDA) permission.
 public enum FilePermissionManager {
@@ -60,12 +64,13 @@ public enum FilePermissionManager {
     /// This method opens the Full Disk Access section within System Settings (Preferences).
     /// The user must manually grant permission to the application.
     /// It also sets a flag indicating that an FDA request has been made.
+    #if canImport(AppKit)
     public static func requestFullDiskAccess() {
         // URL for macOS 13 (Ventura) and later.
         // For older macOS versions, the preference pane path might differ slightly,
         // but this format is generally robust.
         let urlString = "x-apple.systempreferences:com.apple.preference.security?Privacy_FullDiskAccess"
-        
+
         guard let url = URL(string: urlString) else {
             // Log error: Could not create URL for Full Disk Access settings.
             // This should ideally not happen with a hardcoded, valid URL string.
@@ -75,6 +80,7 @@ public enum FilePermissionManager {
         NSWorkspace.shared.open(url)
         UserDefaults.standard.set(true, forKey: fdaRequestedKey)
     }
+    #endif
     
     /// Resets the flag indicating that an FDA request has been made.
     /// Useful for testing or if the app wants to re-trigger certain UI based on this flag.
