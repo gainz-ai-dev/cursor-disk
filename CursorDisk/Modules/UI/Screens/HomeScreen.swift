@@ -143,7 +143,6 @@ struct HomeScreen: View {
             .padding(.vertical, 10)
             .padding(.horizontal, 20)
             .background(Material.regularMaterial, in: RoundedRectangle(cornerRadius: 10))
-
             Group {
                 if viewModel.isScanning {
                     HStack {
