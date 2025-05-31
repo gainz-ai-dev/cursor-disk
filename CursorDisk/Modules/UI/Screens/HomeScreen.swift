@@ -130,18 +130,19 @@ struct HomeScreen: View {
     private var mainContentView: some View {
         VStack(spacing: 15) {
             // Scan Controls and Info
-            VStack {
+            VStack(alignment: .leading, spacing: 12) {
+                VolumeListView(volumes: viewModel.volumes)
+
                 HStack {
-                    Label("Discovered Volumes: \(viewModel.volumes.map { $0.name }.joined(separator: ", "))", systemImage: "externaldrive.fill.badge.icloud")
-                        .font(.headline)
                     Spacer()
                     Text("Indexed: \(viewModel.indexedFileCount) items")
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                 }
-                .padding(.vertical, 10)
-                .padding(.horizontal, 20)
-                .background(Material.regularMaterial, in: RoundedRectangle(cornerRadius: 10))
+            }
+            .padding(.vertical, 10)
+            .padding(.horizontal, 20)
+            .background(Material.regularMaterial, in: RoundedRectangle(cornerRadius: 10))
                 
 
                 if viewModel.isScanning {
@@ -189,13 +190,20 @@ struct HomeScreen: View {
                     .fill(Material.ultraThickMaterial)
                     .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 2)
                 
-                ChartView() // Existing ChartView placeholder
-                    .padding(10) 
+                ChartView(progress: rootUsage)
+                    .padding(10)
             }
             .padding(20)
             
             Spacer() // Pushes content up
         }
+    }
+
+    private var rootUsage: Double {
+        guard let root = viewModel.volumes.first(where: { $0.isRoot }) else {
+            return 0
+        }
+        return 1 - Double(root.freeCapacity) / Double(root.totalCapacity)
     }
 }
 
