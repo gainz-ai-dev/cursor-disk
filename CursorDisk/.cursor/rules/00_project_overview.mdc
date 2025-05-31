@@ -1,0 +1,50 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Project Overview & System Context
+
+You are a senior macOS engineer who writes production-ready, modular, reusable Swift + SwiftUI code for Apple-silicon Macs only.
+The goal is to build **"Cursor for File Management"** – a Daisy-Disk-style app with an AI chat bar that converts natural-language questions into file queries.
+All logic runs **100 % locally**.
+Target macOS ≥ 14 (Sonoma).
+You must respect the **folder structure** below and the **coding & UI rules** that follow.
+
+## Folder Structure
+
+```
+CursorDisk
+├── App
+├── Modules
+│   ├── Core
+│   │   ├── FileSystem
+│   │   ├── Indexing
+│   │   ├── Querying
+│   │   ├── NLP
+│   │   └── Utilities
+│   ├── Features
+│   │   ├── Scan
+│   │   ├── Search
+│   │   ├── Visualise
+│   │   └── Settings
+│   ├── UI
+│   │   ├── DesignSystem
+│   │   ├── Components
+│   │   └── Screens
+│   └── Shared
+│       ├── Services
+│       └── Extensions
+├── Resources
+│   ├── Assets
+│   ├── Localization
+│   └── Config
+├── Scripts
+├── Tests
+│   ├── Unit
+│   ├── Feature
+│   ├── UI
+│   └── Integration
+└── CI
+└── Pipelines
+```

@@ -1,0 +1,53 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+### Updated **Core Functionality Requirements**
+
+| Module         | Responsibility                                                                   | Key types / Specs                            |
+| -------------- | -------------------------------------------------------------------------------- | -------------------------------------------- |
+| **FileSystem** | Mount discovery, permission flow (Full-Disk Access), live change tracking        | `Volume`, `FilePermissionManager`            |
+| **Indexing**   | Async disk crawl, in-memory index (actor), snapshot save/restore                 | `FileIndexActor`, `FileInfo`                 |
+| **Querying**   | Pure-Swift DSL → predicate runner → `[FileInfo]`                                 | `Query`, `QueryEngine`                       |
+| **NLP**        | Natural-language ➝ DSL translator via a *single HTTPS call* to your LLM endpoint | `NLPService`, **PromptTemplate** (see below) |
+| **Utilities**  | Size formatting, logging, error telemetry                                        | `ByteCountFormatter+`, `Log`                 |
+
+---
+
+#### **PromptTemplate** (used by `NLPService`)
+
+```
+SYSTEM  (Query-Translator v1.0)
+
+You convert a user’s natural-language request about files on their Mac
+into a minified JSON object that the local QueryEngine can execute.
+Return *only* the JSON—no prose.
+
+DSL schema
+{
+  "filters": {
+    "uti": [String],            // e.g. "public.movie"; "media" ⇒ movies+audio+images
+    "directory": String,        // absolute or ~/ path
+    "minSize": Integer,         // bytes
+    "maxSize": Integer,         // bytes
+    "modifiedAfter": String,    // "YYYY-MM-DD"
+    "modifiedBefore": String,   // "YYYY-MM-DD"
+    "nameContains": String
+  },
+  "sort":  { "field": "size" | "mtime" | "name", "order": "asc" | "desc" },
+  "limit": Integer             // omit → 50; use 1 for “largest…”, “oldest…”
+}
+
+Examples
+User:  “Find the largest media file in the Downloads folder”
+→ {"filters":{"uti":["public.image","public.audio","public.movie"],"directory":"~/Downloads"},"sort":{"field":"size","order":"desc"},"limit":1}
+
+User:  “Show me PDFs over 20 MB modified after 1 Jan 2024”
+→ {"filters":{"uti":["public.pdf"],"minSize":20971520,"modifiedAfter":"2024-01-01"},"sort":{"field":"size","order":"desc"}}
+```
+
+* `NLPService.translate(_:)` sends the user’s text plus this prompt to the LLM, receives the JSON, validates it against the schema, then forwards it to `QueryEngine.run(_:)`.
+* The entire transformation happens client-side except for this outbound call; **no other module communicates with the network.**
+
+This prompt definition is now formally part of the **Core Functionality Requirements**.

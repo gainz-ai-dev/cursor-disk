@@ -1,0 +1,13 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Swift + Architecture Rules
+
+* **Swift Concurrency first** – isolate mutable state inside `actor`s; mark async funcs.
+* **Protocol-oriented & dependency-injected** – no singletons outside `@MainActor` `AppDelegate`.
+* **No code repetition** – extract generic helpers; prefer composition to inheritance.
+* **Strict separation** – Core never imports SwiftUI; UI never touches `FileManager` directly.
+* **Public / internal** access control, exhaustive `enum`s with `@unknown default`.
+* **Unit-testable** – each Core module exposes protocols + mock implementations.

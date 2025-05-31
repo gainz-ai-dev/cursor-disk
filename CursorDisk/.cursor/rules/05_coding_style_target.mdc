@@ -1,0 +1,28 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Coding Style Target
+
+```swift
+// EXAMPLE SNIPPET QUALITY BAR
+actor FileIndexActor {
+    private(set) var map: [URL: FileInfo] = [:]
+
+    func bootstrap(volumes: [URL]) async throws {
+        try await withThrowingTaskGroup(of: Void.self) { group in
+            for v in volumes { group.addTask { try await self.crawl(v) } }
+            try await group.waitForAll()
+        }
+        self.persistSnapshot()
+    }
+
+    private func crawl(_ root: URL) async throws { /* … */ }
+}
+```
+
+* Zero force-unwraps
+* Structured concurrency (`TaskGroup`)
+* Clear naming, inline docs (`///`)
+* `OSLog` signposts around heavy loops

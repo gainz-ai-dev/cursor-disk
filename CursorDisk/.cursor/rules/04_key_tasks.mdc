@@ -1,0 +1,14 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Key Tasks
+
+1. **FileIndexActor.swift** – full crawl + FSEvents patching, snapshot `Codable`.
+2. **QueryEngine.swift** – filters: UTI list, min/max size, date range, search text.
+3. **NLPService.swift** – five starter patterns (“largest X”, “older than”, “files in Downloads >2 GB”…).
+4. **SunburstView.swift** – GPU-efficient radial treemap with interactive slice highlighting.
+5. **CursorDiskApp.swift** – `@main` that wires dependencies via `.environment(\.injected, …)`.
+6. **DesignSystem** folder scaffolding.
+7. **Unit tests** for QueryEngine + NLP translator.

@@ -1,0 +1,21 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# UI / SwiftUI Guidelines
+
+1. **Minimalistic & subtle** – grayscale palette + accentColor; spacious layout.
+2. **DesignSystem**
+   * `AppColor`, `AppFont`, `AppSpacing`, `AppIcon` enums.
+   * `GlassCardStyle`, `PrimaryButtonStyle` using `.background(.ultraThinMaterial)` and `.clipShape(.rect(cornerRadius: 12))`.
+3. **Animations**
+   * Prefer `matchedGeometryEffect`, `TimelineView`, `Canvas` shaders.
+   * Ease curves: `.spring(response:0.45,dampingFraction:0.8,blendDuration:0.25)`.
+   * Sunburst slices animate radius & angle on hover; chat bubbles fade/slide.
+4. **Screens**
+   * **DashboardView** – radial sunburst, total space summary, quick-action toolbar.
+   * **ChatBar** – bottom command palette (`.glass`) with syntax highlighting of parsed DSL.
+   * **ResultList** – collapsible `OutlineGroup` of query results, "Reveal in Finder" context menu.
+   * **SettingsView** – permission toggles, theme picker, index statistics.
+5. **Accessibility** – `Text` always `.font(.dynamicType)`, provide VoiceOver labels, reduce-motion fallback.
